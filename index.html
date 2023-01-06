@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://media.istockphoto.com/id/1223221880/vector/old-enigma-machine.jpg?s=612x612&w=0&k=20&c=Btv5-kq_W3wRe8jFQ1QelRHxl4rIIYnrjwwgBjQ_YFA=">
+    <title>Enigma-Simulation</title>
+    <style>
+        textarea {
+            background-color: rgb(55, 59, 69);
+            color: white;
+            margin: 15px;
+            margin-bottom: 5px;
+            padding: 7px;
+            resize: none;
+            border-radius: 5px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 115%;
+            text-transform: uppercase;
+        }
+        button {
+            margin: 15px;
+            background-color: azure;
+            border: none;
+            padding: 10px 17px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition-duration: 0.1s;
+        }
+        button:hover {
+            background-color: darkgray;
+        }
+    </style>
+    <script>
+        function run() {
+            var walzeR = document.getElementById("walze1").value -1;
+            var walzeM = document.getElementById("walze2").value -1;
+            var walzeL = document.getElementById("walze3").value -1;
+            if (walzeR == walzeM || walzeR == walzeL || walzeM == walzeL) {
+                window.alert("Die Walzen muessen verschieden sein!");
+                return;
+            }
+            var grundR = document.getElementById("initial1").value;
+            var grundM = document.getElementById("initial2").value;
+            var grundL = document.getElementById("initial3").value;
+            
+            var ringR = document.getElementById("ring1").value;
+            var ringM = document.getElementById("ring2").value;
+            var ringL = document.getElementById("ring3").value;
+
+            const walzen   = ["EKMFLGDQVZNTOWYHXUSPAIBRCJ","AJDKSIRUXBLHWTMCQGZNPYFVOE","BDFHJLCPRTXVZNYEIWGAKMUSQO","ESOVPZJAYQUIRHXLNFTGKDCMWB",
+                              "VZBRGITYUPSDNHLXAWMJQOFECK","JPGVOUMFYQBENHZRDKASXLICTW","NZJHGRCXMYSWBOUFAIVLPEKQDT","FKQHTLXOCBJSPDZRAMEWNIUYGV"];
+            const kontakte = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                              "ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+            const dpunkte  = ["R","F","W","K","A","A","A","A"];
+            const dpunkte2 = ["", "", "", "", "", "N","N","N"];
+            const ukw      = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
+
+            drehe(kontakte, walzen, walzeR, alphabetPos(grundR));
+            drehe(kontakte, walzen,  walzeM, alphabetPos(grundM));
+            drehe(kontakte, walzen, walzeL, alphabetPos(grundL));
+        
+            var input =  document.getElementById("input").value.toUpperCase().replaceAll(" ", "");
+            var output = "";
+            var letter;
+            while(input != "") {
+                letter = input.charAt(0);
+                input = input.slice(1);
+                
+                drehe(kontakte, walzen, walzeR, 1);
+                if(kontakte[walzeR].charAt(0) == dpunkte[walzeR] || kontakte[walzeR].charAt(0) == dpunkte2[walzeR]) {
+                    drehe(kontakte, walzen, walzeM, 1);
+                    if(kontakte[walzeM].charAt(0) == dpunkte[walzeM] || kontakte[walzeM].charAt(0) == dpunkte2[walzeM]) drehe(kontakte, walzen, walzeL, 1);
+                }
+
+                letter = walzen[walzeR].charAt(alphabetPos(letter));                                
+                letter = walzen[walzeM].charAt(kontakte[walzeR].indexOf(letter));                   
+                letter = walzen[walzeL].charAt(kontakte[walzeM].indexOf(letter));                   
+                letter = ukw.charAt(kontakte[walzeL].indexOf(letter));                              
+                letter = kontakte[walzeL].charAt(alphabetPos(letter));                              
+                letter = kontakte[walzeM].charAt(walzen[walzeL].indexOf(letter));                   
+                letter = kontakte[walzeR].charAt(walzen[walzeM].indexOf(letter));                   
+                letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(walzen[walzeR].indexOf(letter));       
+                output += letter;
+
+                if (output.replaceAll(" ","").length % 5 == 0) output += " ";  
+            }
+
+            document.getElementById("output").innerHTML = output;
+        }
+
+        function drehe(kontakte,walzen,index,drehungen) {
+            for (i = 0; i < drehungen; i++) {
+                kontakte[index] = kontakte[index].slice(1) + kontakte[index].charAt(0);
+                walzen[index]   = walzen[index].slice(1) + walzen[index].charAt(0);
+            }
+        }
+
+        function alphabetPos(letter) {
+            return (letter.charCodeAt(0)-65);
+        }
+    </script>
+</head>
+<body style="text-align: center; font-family: 'Roboto', sans-serif; color: white; background-color: rgb(35, 39, 49);">
+    <h1 style="margin: 50px; font-size: 250%;">Enigma (M3) Simulation</h1>
+    <div>
+        <textarea id="input" rows="20" cols="40" placeholder="EINGABE..."></textarea>
+        <textarea id="output" rows="20" cols="40" placeholder="AUSGABE..." readonly></textarea>
+    </div>
+    <div style="font-size: 115%;">
+        <button onclick="run()">Ausfuehren</button><br><br><br>
+        <h2>Konfiguration</h2>
+        <table style="margin-left: auto; margin-right: auto;">
+            <tr>
+                <th>Walze</th>
+                <th>Grundstellung</th>
+                <th>Ringstellung</th>
+            </tr>
+            <tr>
+                <td><input type="text" id="walze1" value="1"></td>
+                <td><input type="text" id="initial1" value="A"></td>
+                <td><input type="text" id="ring1" value="1"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="walze2" value="2"></td>
+                <td><input type="text" id="initial2" value="A"></td>
+                <td><input type="text" id="ring2" value="1"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="walze3" value="3"></td>
+                <td><input type="text" id="initial3" value="A"></td>
+                <td><input type="text" id="ring3" value="1"></td>
+            </tr>
+        </table>
+    </div>
+    <p id="test"></p>
+</body>
+</html>

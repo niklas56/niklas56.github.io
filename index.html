@@ -51,37 +51,28 @@
             var grundR = document.getElementById("initial1").value;
             var grundM = document.getElementById("initial2").value;
             var grundL = document.getElementById("initial3").value;
-
-
             var ringR = document.getElementById("ring1").value;
             var ringM = document.getElementById("ring2").value;
             var ringL = document.getElementById("ring3").value;
-
-            const walzen = ["EKMFLGDQVZNTOWYHXUSPAIBRCJ", "AJDKSIRUXBLHWTMCQGZNPYFVOE", "BDFHJLCPRTXVZNYEIWGAKMUSQO", "ESOVPZJAYQUIRHXLNFTGKDCMWB",
-                "VZBRGITYUPSDNHLXAWMJQOFECK", "JPGVOUMFYQBENHZRDKASXLICTW", "NZJHGRCXMYSWBOUFAIVLPEKQDT", "FKQHTLXOCBJSPDZRAMEWNIUYGV"];
-            const kontakte = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+            const walzen = ["EKMFLGDQVZNTOWYHXUSPAIBRCJ", "AJDKSIRUXBLHWTMCQGZNPYFVOE", "BDFHJLCPRTXVZNYEIWGAKMUSQO", "ESOVPZJAYQUIRHXLNFTGKDCMWB", "VZBRGITYUPSDNHLXAWMJQOFECK", "JPGVOUMFYQBENHZRDKASXLICTW", "NZJHGRCXMYSWBOUFAIVLPEKQDT", "FKQHTLXOCBJSPDZRAMEWNIUYGV"];
+            const kontakte = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
             const dpunkte = ["R", "F", "W", "K", "A", "A", "A", "A"];
             const dpunkte2 = ["", "", "", "", "", "N", "N", "N"];
             const ukw = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
-
             drehe(kontakte, walzen, walzeR, alphabetPos(grundR));
             drehe(kontakte, walzen, walzeM, alphabetPos(grundM));
             drehe(kontakte, walzen, walzeL, alphabetPos(grundL));
-
             var input = document.getElementById("input").value.toUpperCase().replaceAll(" ", "");
             var output = "";
             var letter;
             while (input != "") {
                 letter = input.charAt(0);
                 input = input.slice(1);
-
                 drehe(kontakte, walzen, walzeR, 1);
                 if (kontakte[walzeR].charAt(0) == dpunkte[walzeR] || kontakte[walzeR].charAt(0) == dpunkte2[walzeR]) {
                     drehe(kontakte, walzen, walzeM, 1);
                     if (kontakte[walzeM].charAt(0) == dpunkte[walzeM] || kontakte[walzeM].charAt(0) == dpunkte2[walzeM]) drehe(kontakte, walzen, walzeL, 1);
                 }
-
                 letter = walzen[walzeR].charAt(alphabetPos(letter));
                 letter = walzen[walzeM].charAt(kontakte[walzeR].indexOf(letter));
                 letter = walzen[walzeL].charAt(kontakte[walzeM].indexOf(letter));
@@ -91,10 +82,8 @@
                 letter = kontakte[walzeR].charAt(walzen[walzeM].indexOf(letter));
                 letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(walzen[walzeR].indexOf(letter));
                 output += letter;
-
                 if (output.replaceAll(" ", "").length % 5 == 0) output += " ";
             }
-
             document.getElementById("output").innerHTML = output;
         }
 
@@ -118,7 +107,10 @@
         <textarea id="output" rows="20" cols="40" placeholder="AUSGABE..." readonly></textarea>
     </div>
     <div style="font-size: 115%;">
-        <button onclick="run()">Ausfuehren</button><br><br><br>
+        <button onclick="run()">Ausfuehren</button>
+        <br>
+        <br>
+        <br>
         <h2>Konfiguration</h2>
         <table style="margin-left: auto; margin-right: auto;">
             <tr>
@@ -127,19 +119,37 @@
                 <th>Ringstellung</th>
             </tr>
             <tr>
-                <td><input type="text" id="walze1" value="1"></td>
-                <td><input type="text" id="initial1" value="A"></td>
-                <td><input type="text" id="ring1" value="1"></td>
+                <td>
+                    <input type="text" id="walze1" value="1">
+                </td>
+                <td>
+                    <input type="text" id="initial1" value="A">
+                </td>
+                <td>
+                    <input type="text" id="ring1" value="1">
+                </td>
             </tr>
             <tr>
-                <td><input type="text" id="walze2" value="2"></td>
-                <td><input type="text" id="initial2" value="A"></td>
-                <td><input type="text" id="ring2" value="1"></td>
+                <td>
+                    <input type="text" id="walze2" value="2">
+                </td>
+                <td>
+                    <input type="text" id="initial2" value="A">
+                </td>
+                <td>
+                    <input type="text" id="ring2" value="1">
+                </td>
             </tr>
             <tr>
-                <td><input type="text" id="walze3" value="3"></td>
-                <td><input type="text" id="initial3" value="A"></td>
-                <td><input type="text" id="ring3" value="1"></td>
+                <td>
+                    <input type="text" id="walze3" value="3">
+                </td>
+                <td>
+                    <input type="text" id="initial3" value="A">
+                </td>
+                <td>
+                    <input type="text" id="ring3" value="1">
+                </td>
             </tr>
         </table>
     </div>

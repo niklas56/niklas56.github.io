@@ -40,7 +40,10 @@
             if (walzeR == walzeM || walzeR == walzeL || walzeM == walzeL) {
                 window.alert("Die Walzen muessen verschieden sein!");
                 return;
-            } 
+            } else if (walzeR < 0 || walzeR > 7 || walzeM < 0 || walzeM > 7 || walzeL < 0 || walzeL > 7) {
+                window.alert("Die ausgewaehlten Walzen existieren nicht! Nur Walzen 1-8 sind moeglich.");
+                return;
+            }
             var grundR = document.getElementById("initial1").value;
             var grundM = document.getElementById("initial2").value;
             var grundL = document.getElementById("initial3").value;

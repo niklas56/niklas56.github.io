@@ -33,7 +33,7 @@
         }
     </style>
     <script>
-        function run() {
+        function verschluessel() {
             var walzeR = document.getElementById("walze1").value -1;
             var walzeM = document.getElementById("walze2").value -1;
             var walzeL = document.getElementById("walze3").value -1;
@@ -45,9 +45,9 @@
             var grundM = document.getElementById("initial2").value;
             var grundL = document.getElementById("initial3").value;
             
-            var ringR = document.getElementById("ring1").value;
-            var ringM = document.getElementById("ring2").value;
-            var ringL = document.getElementById("ring3").value;
+            var ringR = document.getElementById("ring1").value -1;
+            var ringM = document.getElementById("ring2").value -1;
+            var ringL = document.getElementById("ring3").value -1;
 
             const walzen   = ["EKMFLGDQVZNTOWYHXUSPAIBRCJ","AJDKSIRUXBLHWTMCQGZNPYFVOE","BDFHJLCPRTXVZNYEIWGAKMUSQO","ESOVPZJAYQUIRHXLNFTGKDCMWB",
                               "VZBRGITYUPSDNHLXAWMJQOFECK","JPGVOUMFYQBENHZRDKASXLICTW","NZJHGRCXMYSWBOUFAIVLPEKQDT","FKQHTLXOCBJSPDZRAMEWNIUYGV"];
@@ -57,9 +57,11 @@
             const dpunkte2 = ["", "", "", "", "", "N","N","N"];
             const ukw      = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
 
-            drehe(kontakte, walzen, walzeR, alphabetPos(grundR));
-            drehe(kontakte, walzen,  walzeM, alphabetPos(grundM));
-            drehe(kontakte, walzen, walzeL, alphabetPos(grundL));
+            drehe(kontakte, walzen, walzeR, alphabetPos(grundR) + 26-ringR);
+            drehe(kontakte, walzen, walzeM, alphabetPos(grundM) + 26-ringM);
+            drehe(kontakte, walzen, walzeL, alphabetPos(grundL) + 26-ringL);
+            dreheRing(dpunkte, dpunkte2, walzeR, ringR);
+            dreheRing(dpunkte, dpunkte2, walzeM, ringM);
         
             var input =  document.getElementById("input").value.toUpperCase().replaceAll(" ", "");
             var output = "";
@@ -90,10 +92,19 @@
             document.getElementById("output").innerHTML = output;
         }
 
-        function drehe(kontakte,walzen,index,drehungen) {
+        function drehe(kontakte, walzen, index, drehungen) {
             for (i = 0; i < drehungen; i++) {
                 kontakte[index] = kontakte[index].slice(1) + kontakte[index].charAt(0);
                 walzen[index]   = walzen[index].slice(1) + walzen[index].charAt(0);
+            }
+        }
+        
+        function dreheRing(dp, dp2, index, drehungen) {
+            var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for (i = 0; i < drehungen; i++) {
+                dp[index] = alphabet.charAt((alphabet.indexOf(dp[index])-1) % 26);
+                if (dp2[index] != "")
+                    dp2[index] = alphabet.charAt((alphabet.indexOf(dp2[index])-1) % 26);
             }
         }
 
@@ -109,7 +120,7 @@
         <textarea id="output" rows="20" cols="40" placeholder="AUSGABE..." readonly></textarea>
     </div>
     <div style="font-size: 115%;">
-        <button onclick="run()">Ausfuehren</button><br><br><br>
+        <button onclick="verschluessel()">Ausfuehren</button><br><br><br>
         <h2>Konfiguration</h2>
         <table style="margin-left: auto; margin-right: auto;">
             <tr>
@@ -119,17 +130,17 @@
             </tr>
             <tr>
                 <td><input type="number" id="walze1" min="1" max="8" value="1"></td>
-                <td><input type="text" id="initial1" value="A"></td>
+                <td><input type="text" id="initial1" maxlength="1" value="A"></td>
                 <td><input type="number" id="ring1" min="1" max="26" value="1"></td>
             </tr>
             <tr>
                 <td><input type="number" id="walze2" min="1" max="8" value="2"></td>
-                <td><input type="text" id="initial2" value="A"></td>
+                <td><input type="text" id="initial2" maxlength="1" value="A"></td>
                 <td><input type="number" id="ring2" min="1" max="26" value="1"></td>
             </tr>
             <tr>
                 <td><input type="number" id="walze3" min="1" max="8" value="3"></td>
-                <td><input type="text" id="initial3" value="A"></td>
+                <td><input type="text" id="initial3" maxlength="1" value="A"></td>
                 <td><input type="number" id="ring3" min="1" max="26" value="1"></td>
             </tr>
         </table>

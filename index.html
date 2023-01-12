@@ -31,6 +31,10 @@
         button:hover {
             background-color: darkgray;
         }
+        input[type=text] {
+            text-transform: uppercase;
+            width: 45px;
+        }
     </style>
     <script>
         function verschluessel() {
@@ -41,55 +45,64 @@
                 window.alert("Die Walzen muessen verschieden sein!");
                 return;
             }
-            var grundR = document.getElementById("initial1").value;
-            var grundM = document.getElementById("initial2").value;
-            var grundL = document.getElementById("initial3").value;
+            var grundR = document.getElementById("initial1").value.toUpperCase();
+            var grundM = document.getElementById("initial2").value.toUpperCase();
+            var grundL = document.getElementById("initial3").value.toUpperCase();
             
             var ringR = document.getElementById("ring1").value -1;
             var ringM = document.getElementById("ring2").value -1;
             var ringL = document.getElementById("ring3").value -1;
 
-            const walzen   = ["EKMFLGDQVZNTOWYHXUSPAIBRCJ","AJDKSIRUXBLHWTMCQGZNPYFVOE","BDFHJLCPRTXVZNYEIWGAKMUSQO","ESOVPZJAYQUIRHXLNFTGKDCMWB",
-                              "VZBRGITYUPSDNHLXAWMJQOFECK","JPGVOUMFYQBENHZRDKASXLICTW","NZJHGRCXMYSWBOUFAIVLPEKQDT","FKQHTLXOCBJSPDZRAMEWNIUYGV"];
-            const kontakte = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                              "ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
-            const dpunkte  = ["R","F","W","K","A","A","A","A"];
-            const dpunkte2 = ["", "", "", "", "", "N","N","N"];
-            const ukw      = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
+            const stecker = new Map();
+            for (i = 1; i < 14; i++) {
+                var gesteckt = document.getElementById("stecker"+i).value.toUpperCase();
+                if (gesteckt != "") {
+                    stecker.set(gesteckt.charAt(0), gesteckt.charAt(1));
+                    stecker.set(gesteckt.charAt(1), gesteckt.charAt(0));
+                }
+            }
 
-            drehe(kontakte, walzen, walzeR, alphabetPos(grundR) + 26-ringR);
-            drehe(kontakte, walzen, walzeM, alphabetPos(grundM) + 26-ringM);
-            drehe(kontakte, walzen, walzeL, alphabetPos(grundL) + 26-ringL);
+            const verdrahtung   = ["EKMFLGDQVZNTOWYHXUSPAIBRCJ","AJDKSIRUXBLHWTMCQGZNPYFVOE","BDFHJLCPRTXVZNYEIWGAKMUSQO","ESOVPZJAYQUIRHXLNFTGKDCMWB",
+                                   "VZBRGITYUPSDNHLXAWMJQOFECK","JPGVOUMFYQBENHZRDKASXLICTW","NZJHGRCXMYSWBOUFAIVLPEKQDT","FKQHTLXOCBJSPDZRAMEWNIUYGV"];
+            const kontakte      = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                                   "ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ","ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+            const dpunkte       = ["R","F","W","K","A","A","A","A"];
+            const dpunkte2      = ["", "", "", "", "", "N","N","N"];
+            const ukw           = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
+
+            drehe(kontakte, verdrahtung, walzeR, alphabetPos(grundR) + 26-ringR);
+            drehe(kontakte, verdrahtung, walzeM, alphabetPos(grundM) + 26-ringM);
+            drehe(kontakte, verdrahtung, walzeL, alphabetPos(grundL) + 26-ringL);
             dreheRing(dpunkte, dpunkte2, walzeR, ringR);
             dreheRing(dpunkte, dpunkte2, walzeM, ringM);
         
-            var input =  document.getElementById("input").value.toUpperCase().replaceAll(" ", "");
-            var output = "";
-            var letter;
-            while(input != "") {
-                letter = input.charAt(0);
-                input = input.slice(1);
+            var eingabe =  document.getElementById("input").value.toUpperCase().replaceAll(" ", "");
+            var ausgabe = "";
+            var zeichen;
+            while(eingabe != "") {
+                zeichen = steck(eingabe.charAt(0), stecker);
+                eingabe = eingabe.slice(1);
                 
-                drehe(kontakte, walzen, walzeR, 1);
+                drehe(kontakte, verdrahtung, walzeR, 1);
                 if(kontakte[walzeR].charAt(0) == dpunkte[walzeR] || kontakte[walzeR].charAt(0) == dpunkte2[walzeR]) {
-                    drehe(kontakte, walzen, walzeM, 1);
-                    if(kontakte[walzeM].charAt(0) == dpunkte[walzeM] || kontakte[walzeM].charAt(0) == dpunkte2[walzeM]) drehe(kontakte, walzen, walzeL, 1);
+                    drehe(kontakte, verdrahtung, walzeM, 1);
+                    if(kontakte[walzeM].charAt(0) == dpunkte[walzeM] || kontakte[walzeM].charAt(0) == dpunkte2[walzeM]) drehe(kontakte, verdrahtung, walzeL, 1);
                 }
 
-                letter = walzen[walzeR].charAt(alphabetPos(letter));                                
-                letter = walzen[walzeM].charAt(kontakte[walzeR].indexOf(letter));                   
-                letter = walzen[walzeL].charAt(kontakte[walzeM].indexOf(letter));                   
-                letter = ukw.charAt(kontakte[walzeL].indexOf(letter));                              
-                letter = kontakte[walzeL].charAt(alphabetPos(letter));                              
-                letter = kontakte[walzeM].charAt(walzen[walzeL].indexOf(letter));                   
-                letter = kontakte[walzeR].charAt(walzen[walzeM].indexOf(letter));                   
-                letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(walzen[walzeR].indexOf(letter));       
-                output += letter;
-
-                if (output.replaceAll(" ","").length % 5 == 0) output += " ";  
+                zeichen = verdrahtung[walzeR].charAt(alphabetPos(zeichen));                                
+                zeichen = verdrahtung[walzeM].charAt(kontakte[walzeR].indexOf(zeichen));                   
+                zeichen = verdrahtung[walzeL].charAt(kontakte[walzeM].indexOf(zeichen));                   
+                zeichen = ukw.charAt(kontakte[walzeL].indexOf(zeichen));                              
+                zeichen = kontakte[walzeL].charAt(alphabetPos(zeichen));                              
+                zeichen = kontakte[walzeM].charAt(verdrahtung[walzeL].indexOf(zeichen));                   
+                zeichen = kontakte[walzeR].charAt(verdrahtung[walzeM].indexOf(zeichen));                   
+                zeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(verdrahtung[walzeR].indexOf(zeichen));       
+                
+                ausgabe += steck(zeichen, stecker);
+                if (ausgabe.replaceAll(" ","").length % 5 == 0) ausgabe += " ";  
             }
 
-            document.getElementById("output").innerHTML = output;
+            document.getElementById("output").innerHTML = ausgabe;
         }
 
         function drehe(kontakte, walzen, index, drehungen) {
@@ -108,6 +121,11 @@
             }
         }
 
+        function steck(zeichen, stecker) {
+            if (stecker.has(zeichen)) return stecker.get(zeichen); 
+            else return zeichen;
+        }
+
         function alphabetPos(letter) {
             return (letter.charCodeAt(0)-65);
         }
@@ -115,16 +133,14 @@
 </head>
 <body style="text-align: center; font-family: 'Roboto', sans-serif; color: white; background-color: rgb(35, 39, 49);">
     <h1 style="margin: 50px; font-size: 250%;">Enigma (M3) Simulation</h1>
-    <div>
-        <textarea id="input" rows="20" cols="40" placeholder="EINGABE..."></textarea>
-        <textarea id="output" rows="20" cols="40" placeholder="AUSGABE..." readonly></textarea>
-    </div>
+    <textarea id="input" rows="20" cols="40" placeholder="EINGABE..."></textarea>
+    <textarea id="output" rows="20" cols="40" placeholder="AUSGABE..." readonly></textarea><br>
+    <button onclick="verschluessel()">Ausfuehren</button><br><br>
     <div style="font-size: 115%;">
-        <button onclick="verschluessel()">Ausfuehren</button><br><br><br>
         <h2>Konfiguration</h2>
         <table style="margin-left: auto; margin-right: auto;">
             <tr>
-                <th>Walze</th>
+                <th>Walzen</th>
                 <th>Grundstellung</th>
                 <th>Ringe</th>
             </tr>
@@ -144,6 +160,21 @@
                 <td><input type="number" id="ring3" min="1" max="26" value="1"></td>
             </tr>
         </table>
+
+        <h3>Steckerbrett</h3>
+        <input type="text" maxlength="2" id="stecker1">
+        <input type="text" maxlength="2" id="stecker2">
+        <input type="text" maxlength="2" id="stecker3">
+        <input type="text" maxlength="2" id="stecker4"> <br>
+        <input type="text" maxlength="2" id="stecker5">
+        <input type="text" maxlength="2" id="stecker6">
+        <input type="text" maxlength="2" id="stecker7">
+        <input type="text" maxlength="2" id="stecker8">
+        <input type="text" maxlength="2" id="stecker9"> <br>
+        <input type="text" maxlength="2" id="stecker10">
+        <input type="text" maxlength="2" id="stecker11">
+        <input type="text" maxlength="2" id="stecker12">
+        <input type="text" maxlength="2" id="stecker13"> <br><br>
     </div>
 </body>
 </html>

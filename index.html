@@ -162,19 +162,16 @@
         </table>
 
         <h3>Steckerbrett</h3>
-        <input type="text" maxlength="2" id="stecker1">
-        <input type="text" maxlength="2" id="stecker2">
-        <input type="text" maxlength="2" id="stecker3">
-        <input type="text" maxlength="2" id="stecker4"> <br>
-        <input type="text" maxlength="2" id="stecker5">
-        <input type="text" maxlength="2" id="stecker6">
-        <input type="text" maxlength="2" id="stecker7">
-        <input type="text" maxlength="2" id="stecker8">
-        <input type="text" maxlength="2" id="stecker9"> <br>
-        <input type="text" maxlength="2" id="stecker10">
-        <input type="text" maxlength="2" id="stecker11">
-        <input type="text" maxlength="2" id="stecker12">
-        <input type="text" maxlength="2" id="stecker13"> <br><br>
+        <p id="steckerbrett"></p><br><br>
+        <script>
+            for (i = 1; i < 14; i++) {
+                var element = document.createElement("input");
+                element.type = "text";
+                element.id = "stecker" + i;
+                element.maxLength = 2;
+                document.getElementById("steckerbrett").append(element);
+            }
+        </script>
     </div>
 </body>
 </html>

@@ -133,9 +133,8 @@
 </head>
 <body style="text-align: center; font-family: 'Roboto', sans-serif; color: white; background-color: rgb(35, 39, 49);">
     <h1 style="margin: 50px; font-size: 250%;">Enigma (M3) Simulation</h1>
-    <textarea id="input" rows="20" cols="40" placeholder="EINGABE..."></textarea>
+    <textarea id="input" rows="20" cols="40" placeholder="EINGABE..." oninput="verschluessel()"></textarea>
     <textarea id="output" rows="20" cols="40" placeholder="AUSGABE..." readonly></textarea><br>
-    <button onclick="verschluessel()">Ausfuehren</button><br><br>
     <div style="font-size: 115%;">
         <h2>Konfiguration</h2>
         <table style="margin-left: auto; margin-right: auto;">

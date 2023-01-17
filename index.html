@@ -19,18 +19,6 @@
             font-size: 115%;
             text-transform: uppercase;
         }
-        button {
-            margin: 15px;
-            background-color: azure;
-            border: none;
-            padding: 10px 17px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition-duration: 0.1s;
-        }
-        button:hover {
-            background-color: darkgray;
-        }
         input[type=text] {
             text-transform: uppercase;
             width: 45px;
@@ -134,7 +122,7 @@
 <body style="text-align: center; font-family: 'Roboto', sans-serif; color: white; background-color: rgb(35, 39, 49);">
     <h1 style="margin: 50px; font-size: 250%;">Enigma (M3) Simulation</h1>
     <textarea id="input" rows="20" cols="40" placeholder="EINGABE..." oninput="verschluessel()"></textarea>
-    <textarea id="output" rows="20" cols="40" placeholder="AUSGABE..." readonly></textarea><br>
+    <textarea id="output" rows="20" cols="40" placeholder="AUSGABE..." readonly></textarea><br><br>
     <div style="font-size: 115%;">
         <h2>Konfiguration</h2>
         <table style="margin-left: auto; margin-right: auto;">
@@ -159,7 +147,6 @@
                 <td><input type="number" id="ring3" min="1" max="26" value="1"></td>
             </tr>
         </table>
-
         <h3>Steckerbrett</h3>
         <p id="steckerbrett"></p><br><br>
         <script>
